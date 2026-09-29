@@ -14,7 +14,7 @@ cada vez que instales una librería nueva en el backend se usa este comando para
 ```bash
 git branch
 ```
-para ver las ramas (la rama con el simbolo * muestra en la rama en la que te encuentras)
+para ver las ramas (la rama con el simbolo * muestra en la rama en la que te encuentras). También sirve para crear ramas si se escribe de esta forma: git branch <nombre_de_la_rama>
 
 ```bash
 git switch <nombre_de_la_rama>
