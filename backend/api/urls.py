@@ -1,5 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
+from rest_framework_simplejwt.views import TokenRefreshView
 from .views import(
     RolViewSet,
     UsuarioViewSet,
@@ -12,6 +13,7 @@ from .views import(
     ValoresExtraidosViewSet,
     CumplimientoMensualViewSet,
     RegistrosViewSet,
+    CustomTokenObtainPairView
 )
 
 #registra las urls y genera la API navegable de drf
@@ -30,5 +32,8 @@ router.register(r"cumplimiento-mensual", CumplimientoMensualViewSet, basename="c
 router.register(r"registros-auditoria", RegistrosViewSet, basename="registros")
 
 urlpatterns = [
+    #endpoints de autenticación JWT
+    path("auth/login/", CustomTokenObtainPairView.as_view(), name = "token_obtain_pair"),
+    path("auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("", include(router.urls))
 ]

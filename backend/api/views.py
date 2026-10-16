@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, mixins
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import(
     Rol,
     Usuario,
@@ -25,7 +26,8 @@ from .serializers import (
     ArchivosRemSerializer,
     ValoresExtraidosSerializer,
     CumplimientoMensualSerializer,
-    RegistrosSerializer
+    RegistrosSerializer,
+    CustomTokenObtainPairSerializer
 )
 
 # Create your views here.
@@ -78,3 +80,8 @@ class RegistrosViewSet(
     ):
     queryset = Registros.objects.all().order_by("-fecha_hora").select_related("id_usuario")
     serializer_class = RegistrosSerializer
+
+#vista para la autenticación JWT del login
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

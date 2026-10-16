@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import(
     Rol,
     Usuario,
@@ -117,3 +118,19 @@ class RegistrosSerializer(serializers.ModelSerializer):
             "usuario",
             "usuario_detalle"
         ]
+
+#Autenticación JWT para el login del usuario
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = "rut" #se utiliza el rut para la autenticación
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        #datos personalizados para el payload de jwt (útil para el frontend)
+        token["rut"] = user.rut
+        token["nombres"] = user.nombres
+        token["apellidos"] = user.apellidos
+        token["rol"] = user.rol.nombre_rol if user.rol else None
+
+        return token
