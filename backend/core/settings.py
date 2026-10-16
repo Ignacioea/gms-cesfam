@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS")
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -143,3 +143,5 @@ MAILERS = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True #permite las peticiones locales desde React
+
+AUTH_USER_MODEL = 'api.Usuario' #obligatorio para la herencia de AbstractUSer

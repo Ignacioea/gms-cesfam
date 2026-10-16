@@ -38,7 +38,7 @@ class Usuario(AbstractUser):
     class Meta:
         db_table = "usuario"
         verbose_name = "Usuario"
-        verboose_name_plural = "Usuarios"
+        verbose_name_plural = "Usuarios"
     def __str__(self):
         return f"{self.nombres} {self.apellidos} ({self.rut})."
 
