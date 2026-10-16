@@ -30,43 +30,43 @@ from .serializers import (
 
 # Create your views here.
 
-class RolViewSet(viewsets.Model):
+class RolViewSet(viewsets.ModelViewSet):
     queryset = Rol.objects.all()
     serializer_class = RolSerializer
 
-class UsuarioViewSet(viewsets.Model):
+class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all().select_related("id_rol")
     serializer_class = UsuarioSerializer
     
-class SectorViewSet(viewsets.Model):
+class SectorViewSet(viewsets.ModelViewSet):
     queryset = Sector.objects.all()
     serializer_class = SectorSerializer
 
-class ProgramaViewSet(viewsets.Model):
+class ProgramaViewSet(viewsets.ModelViewSet):
     queryset = Programa.objects.all().select_related("id_usuario")
     serializer_class = ProgramaSerializer
 
-class MetaSanitariaViewSet(viewsets.Model):
+class MetaSanitariaViewSet(viewsets.ModelViewSet):
     queryset = MetaSanitaria.objects.all().select_related("id_programa")
     serializer_class = MetaSanitariaSerializer
 
-class IndicadorViewSet(viewsets.Model):
+class IndicadorViewSet(viewsets.ModelViewSet):
     queryset = Indicador.objects.all().select_related("id_meta")
     serializer_class = IndicadorSerializer
 
-class PlantillaRemMapeoViewSet(viewsets.Model):
+class PlantillaRemMapeoViewSet(viewsets.ModelViewSet):
     queryset = PlantillaRemMapeo.objects.all().select_related("id_indicador")
     serializer_class = PlantillaRemMapeoSerializer
 
-class ArchivosRemViewSet(viewsets.Model):
+class ArchivosRemViewSet(viewsets.ModelViewSet):
     queryset = ArchivosRem.objects.all().select_related("id_usuario")
     serializer_class = ArchivosRemSerializer
 
-class ValoresExtraidosViewSet(viewsets.Model):
+class ValoresExtraidosViewSet(viewsets.ModelViewSet):
     queryset = ValoresExtraidos.objects.all().select_related("id_archivo", "id_mapeo", "id_sector")
     serializer_class = ValoresExtraidosSerializer
 
-class CumplimientoMensualViewSet(viewsets.Model):
+class CumplimientoMensualViewSet(viewsets.ModelViewSet):
     queryset = CumplimientoMensual.objects.all().select_related("id_indicador", "id_sector")
     serializer_class = CumplimientoMensualSerializer
 
