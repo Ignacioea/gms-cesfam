@@ -37,7 +37,7 @@ class RolViewSet(viewsets.ModelViewSet):
     serializer_class = RolSerializer
 
 class UsuarioViewSet(viewsets.ModelViewSet):
-    queryset = Usuario.objects.all().select_related("id_rol")
+    queryset = Usuario.objects.all().select_related("rol")
     serializer_class = UsuarioSerializer
     
 class SectorViewSet(viewsets.ModelViewSet):
@@ -45,31 +45,31 @@ class SectorViewSet(viewsets.ModelViewSet):
     serializer_class = SectorSerializer
 
 class ProgramaViewSet(viewsets.ModelViewSet):
-    queryset = Programa.objects.all().select_related("id_usuario")
+    queryset = Programa.objects.all().select_related("usuario")
     serializer_class = ProgramaSerializer
 
 class MetaSanitariaViewSet(viewsets.ModelViewSet):
-    queryset = MetaSanitaria.objects.all().select_related("id_programa")
+    queryset = MetaSanitaria.objects.all().select_related("programa")
     serializer_class = MetaSanitariaSerializer
 
 class IndicadorViewSet(viewsets.ModelViewSet):
-    queryset = Indicador.objects.all().select_related("id_meta")
+    queryset = Indicador.objects.all().select_related("meta")
     serializer_class = IndicadorSerializer
 
 class PlantillaRemMapeoViewSet(viewsets.ModelViewSet):
-    queryset = PlantillaRemMapeo.objects.all().select_related("id_indicador")
+    queryset = PlantillaRemMapeo.objects.all().select_related("indicador")
     serializer_class = PlantillaRemMapeoSerializer
 
 class ArchivosRemViewSet(viewsets.ModelViewSet):
-    queryset = ArchivosRem.objects.all().select_related("id_usuario")
+    queryset = ArchivosRem.objects.all().select_related("usuario")
     serializer_class = ArchivosRemSerializer
 
 class ValoresExtraidosViewSet(viewsets.ModelViewSet):
-    queryset = ValoresExtraidos.objects.all().select_related("id_archivo", "id_mapeo", "id_sector")
+    queryset = ValoresExtraidos.objects.all().select_related("archivo", "mapeo", "sector")
     serializer_class = ValoresExtraidosSerializer
 
 class CumplimientoMensualViewSet(viewsets.ModelViewSet):
-    queryset = CumplimientoMensual.objects.all().select_related("id_indicador", "id_sector")
+    queryset = CumplimientoMensual.objects.all().select_related("indicador", "sector")
     serializer_class = CumplimientoMensualSerializer
 
 class RegistrosViewSet(
@@ -78,7 +78,7 @@ class RegistrosViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet
     ):
-    queryset = Registros.objects.all().order_by("-fecha_hora").select_related("id_usuario")
+    queryset = Registros.objects.all().order_by("-fecha_hora").select_related("usuario")
     serializer_class = RegistrosSerializer
 
 #vista para la autenticación JWT del login

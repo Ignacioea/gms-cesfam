@@ -25,7 +25,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = [
-            "id_usuario",
+            "id",
             "rut",
             "nombres",
             "apellidos",
@@ -49,7 +49,7 @@ class ProgramaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Programa
         fields = [
-            "id_programa",
+            "id",
             "nombre_programa",
             "codigo_programa",
             "usuario",
@@ -88,7 +88,7 @@ class CumplimientoMensualSerializer(serializers.ModelSerializer):
     class Meta:
         model = CumplimientoMensual
         fields = [
-            "id_cumplimiento",
+            "id",
             "periodo_mes",
             "periodo_year",
             "numerador",
@@ -107,7 +107,7 @@ class RegistrosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Registros
         fields = [
-            "id_registro",
+            "id",
             "accion",
             "rol_usuario",
             "tabla_afectada",
