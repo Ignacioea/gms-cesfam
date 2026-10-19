@@ -18,7 +18,7 @@ class Usuario(AbstractUser):
     rut = models.CharField(max_length=11, unique=True)
     nombres = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=100)
-    correo = models.EmailField(max_length=100, unique=True)
+    email = models.EmailField(max_length=100, unique=True, db_column="correo")
     password_hash = models.CharField(max_length=255)
     estado = models.BooleanField(default=True)
     rol = models.ForeignKey(
@@ -33,7 +33,6 @@ class Usuario(AbstractUser):
     #campos nativos de django en None evitar colisiones
     first_name=None
     last_name=None
-    email=None
 
     class Meta:
         db_table = "usuario"

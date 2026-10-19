@@ -152,7 +152,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        # 'rest_framework.permissions.IsAuthenticated', # Exige token válido en toda la API por defecto
+        #'rest_framework.permissions.IsAuthenticated', # Exige token válido en toda la API por defecto
         'rest_framework.permissions.AllowAny', # Permite acceso público temporal para desarrollo local
     )
 }
