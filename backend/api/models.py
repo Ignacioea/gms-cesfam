@@ -15,11 +15,12 @@ class Rol(models.Model):
         return self.nombre_rol
 
 class Usuario(AbstractUser):
+    USERNAME_FIELD = "rut"
+
     rut = models.CharField(max_length=11, unique=True)
     nombres = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=100)
-    correo = models.EmailField(max_length=100, unique=True)
-    password_hash = models.CharField(max_length=255)
+    email = models.EmailField(max_length=100, unique=True, db_column="correo")
     estado = models.BooleanField(default=True)
     rol = models.ForeignKey(
         Rol,
@@ -33,12 +34,15 @@ class Usuario(AbstractUser):
     #campos nativos de django en None evitar colisiones
     first_name=None
     last_name=None
-    email=None
 
+    USERNAME_FIELD = "rut"
+    REQUIRED_FIELDS = ["username", "email", "nombres", "apellidos"]
+    
     class Meta:
         db_table = "usuario"
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"
+
     def __str__(self):
         return f"{self.nombres} {self.apellidos} ({self.rut})."
 

@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import(
     Rol,
     Usuario,
@@ -24,18 +25,23 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = [
-            "id_usuario",
+            "id",
             "rut",
             "nombres",
             "apellidos",
-            "correo",
+            "email",
             "estado",
             "rol",
-            "rol_detalle"
+            "rol_detalle",
+            "password",
             ]
         extra_kwargs = {
-            "password_hash": {"write_only":True} #esto para evitar exponer la clave en el JSON
+            "password": {"write_only":True} #esto para evitar exponer la clave en el JSON
         }
+    def create(self, validated_data):
+        password = validated_data.pop("password")
+        validated_data["username"] = validated_data["rut"]
+        return Usuario.objects.create_user(password = password, **validated_data)
 
 class SectorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -48,7 +54,7 @@ class ProgramaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Programa
         fields = [
-            "id_programa",
+            "id",
             "nombre_programa",
             "codigo_programa",
             "usuario",
@@ -87,7 +93,7 @@ class CumplimientoMensualSerializer(serializers.ModelSerializer):
     class Meta:
         model = CumplimientoMensual
         fields = [
-            "id_cumplimiento",
+            "id",
             "periodo_mes",
             "periodo_year",
             "numerador",
@@ -106,7 +112,7 @@ class RegistrosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Registros
         fields = [
-            "id_registro",
+            "id",
             "accion",
             "rol_usuario",
             "tabla_afectada",
@@ -117,3 +123,19 @@ class RegistrosSerializer(serializers.ModelSerializer):
             "usuario",
             "usuario_detalle"
         ]
+
+#Autenticación JWT para el login del usuario
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = "rut" #se utiliza el rut para la autenticación
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        #datos personalizados para el payload de jwt (útil para el frontend)
+        token["rut"] = user.rut
+        token["nombres"] = user.nombres
+        token["apellidos"] = user.apellidos
+        token["rol"] = user.rol.nombre_rol if user.rol else None
+
+        return token

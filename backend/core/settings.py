@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 
 #cargar variables del archivo .env
 load_dotenv()
@@ -118,9 +119,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-cl'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Santiago'
 
 USE_I18N = True
 
@@ -145,3 +146,23 @@ MAILERS = {
 CORS_ALLOW_ALL_ORIGINS = True #permite las peticiones locales desde React
 
 AUTH_USER_MODEL = 'api.Usuario' #obligatorio para la herencia de AbstractUSer
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', # Exige token válido en toda la API por defecto
+        #'rest_framework.permissions.AllowAny', # Permite acceso público temporal para desarrollo local
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # El token de acceso dura 60 min
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # El token de refresco dura 1 día
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),                # Header: Authorization: Bearer <token>
+    'USER_ID_FIELD': 'id',                  # Clave primaria del modelo Usuario
+    'USER_ID_CLAIM': 'user_id',
+}
