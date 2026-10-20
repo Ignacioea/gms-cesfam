@@ -29,14 +29,19 @@ class UsuarioSerializer(serializers.ModelSerializer):
             "rut",
             "nombres",
             "apellidos",
-            "correo",
+            "email",
             "estado",
             "rol",
-            "rol_detalle"
+            "rol_detalle",
+            "password",
             ]
         extra_kwargs = {
-            "password_hash": {"write_only":True} #esto para evitar exponer la clave en el JSON
+            "password": {"write_only":True} #esto para evitar exponer la clave en el JSON
         }
+    def create(self, validated_data):
+        password = validated_data.pop("password")
+        validated_data["username"] = validated_data["rut"]
+        return Usuario.objects.create_user(password = password, **validated_data)
 
 class SectorSerializer(serializers.ModelSerializer):
     class Meta:

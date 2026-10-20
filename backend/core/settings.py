@@ -152,8 +152,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        #'rest_framework.permissions.IsAuthenticated', # Exige token válido en toda la API por defecto
-        'rest_framework.permissions.AllowAny', # Permite acceso público temporal para desarrollo local
+        'rest_framework.permissions.IsAuthenticated', # Exige token válido en toda la API por defecto
+        #'rest_framework.permissions.AllowAny', # Permite acceso público temporal para desarrollo local
     )
 }
 
@@ -163,6 +163,6 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),                # Header: Authorization: Bearer <token>
-    'USER_ID_FIELD': 'id_usuario',                  # Clave primaria del modelo Usuario
+    'USER_ID_FIELD': 'id',                  # Clave primaria del modelo Usuario
     'USER_ID_CLAIM': 'user_id',
 }
