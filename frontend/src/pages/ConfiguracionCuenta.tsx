@@ -198,12 +198,10 @@ export default function ConfiguracionCuenta() {
                 <span className={`px-3 py-0.5 rounded-full text-xs font-black uppercase tracking-wider border shadow-sm ${getBadgeColorRol(rolNombre)}`}>
                   {rolNombre}
                 </span>
-                <span className="inline-flex items-center gap-1 text-xs text-emerald-400 font-semibold bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Sesión JWT Activa
-                </span>
+                
+                  
               </div>
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-white">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-white text-left w-full">
                 {cargandoDatos ? 'Cargando perfil...' : `${nombres} ${apellidos}`.trim() || initialName}
               </h2>
               <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300 font-medium pt-1">
@@ -273,11 +271,10 @@ export default function ConfiguracionCuenta() {
                     <User size={18} />
                   </div>
                   <div>
-                    <h4 className="text-base font-black text-blue-950">Información del Funcionario</h4>
-                    <p className="text-xs text-slate-500 font-medium">Datos personales e identificación en la red asistencial del CESFAM.</p>
+                    <h4 className="text-base font-black text-blue-950 text-left w-full">Información personal</h4>
+                    <p className="text-xs text-slate-500 font-medium text-left w-full">Datos personales e identificación en la red</p>
                   </div>
                 </div>
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Paso 1 de 2</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -311,7 +308,7 @@ export default function ConfiguracionCuenta() {
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    RUT Institucional (Identificador)
+                    RUT (Identificador)
                   </label>
                   <div className="relative">
                     <input
@@ -355,13 +352,10 @@ export default function ConfiguracionCuenta() {
                     <Key size={18} />
                   </div>
                   <div>
-                    <h4 className="text-base font-black text-blue-950">Seguridad y Credenciales de Acceso</h4>
-                    <p className="text-xs text-slate-500 font-medium">
-                      Actualice su contraseña periódicamente para proteger los registros de salud del CESFAM.
-                    </p>
+                    <h4 className="text-base font-black text-blue-950 text-left w-full">Seguridad y credenciales de acceso</h4>
+                    <p className="text-xs text-slate-500 font-medium text-left w-full">Actualice su contraseña periódicamente para proteger los registros de la plataforma</p>
                   </div>
                 </div>
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Paso 2 de 2</span>
               </div>
 
               {/* Contraseña Actual */}
@@ -495,7 +489,7 @@ export default function ConfiguracionCuenta() {
           <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4">
             <div className="flex items-center gap-2 text-xs font-bold text-blue-950 uppercase tracking-wider pb-2 border-b border-slate-100">
               <ShieldCheck size={16} className="text-blue-600" />
-              <span>Privilegios y Alcance (RBAC)</span>
+              <span>Privilegios y Alcance</span>
             </div>
 
             <div className="space-y-3">
@@ -566,20 +560,11 @@ export default function ConfiguracionCuenta() {
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200">
-                <div>
-                  <span className="font-bold text-slate-700 block">Tipo de Token</span>
-                  <span className="text-[11px] text-slate-400 font-mono">SimpleJWT (Bearer)</span>
-                </div>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                  Válido
-                </span>
-              </div>
 
               <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200">
                 <div>
                   <span className="font-bold text-slate-700 block">Identificación de Red</span>
-                  <span className="text-[11px] text-slate-400 font-mono">127.0.0.1 / Red Salud</span>
+                  <span className="text-[11px] text-slate-400 font-mono ">127.0.0.1 / CESFAM</span>
                 </div>
                 <Activity size={15} className="text-blue-600" />
               </div>
@@ -587,7 +572,7 @@ export default function ConfiguracionCuenta() {
               <div className="p-3 rounded-2xl bg-blue-50/60 border border-blue-200 text-blue-950 space-y-1">
                 <span className="font-black text-xs flex items-center gap-1.5">
                   <ShieldAlert size={14} className="text-blue-700" />
-                  Política de Seguridad CESFAM
+                  Política de Seguridad 
                 </span>
                 <p className="text-[11px] text-blue-900/80 leading-relaxed font-medium">
                   Cierre siempre su sesión al abandonar su estación de trabajo clínica para evitar accesos no autorizados a datos sensibles de pacientes.

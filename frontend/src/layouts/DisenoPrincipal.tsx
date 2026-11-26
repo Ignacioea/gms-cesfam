@@ -48,7 +48,9 @@ export default function DisenoPrincipal() {
           <div className="p-4 border-b border-slate-800 flex items-center gap-3 bg-blue-900/60">
             <img src={userPhoto} alt="Perfil" className="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 shrink-0" />
             <div className="overflow-hidden">
-              <p className="text-xs font-bold text-white truncate">{userName}</p>
+              <p className="text-xs font-bold text-white truncate">
+                {userName}
+                </p>
               <span className="inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 font-semibold uppercase mt-0.5">
               {userRole}
               </span>
@@ -61,7 +63,7 @@ export default function DisenoPrincipal() {
           {(userRole === 'Directora' || userRole === 'Subdireccion' || userRole === 'Gestor' || userRole === 'JefePrograma' || userRole === 'Jefe de Programa') && (
             <Link 
               to="/dashboard" 
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/dashboard' ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/dashboard' ? 'bg-blue-600 text-white font-semibold' : 'font-medium hover:bg-slate-800 hover:text-white'}`}
             >
               <LayoutDashboard size={18} className="shrink-0" />
               {sidebarOpen && <span className="truncate">Dashboard General</span>}
@@ -70,8 +72,9 @@ export default function DisenoPrincipal() {
 
           {(userRole === 'Subdireccion' || userRole === 'Gestor' || userRole === 'Directora') && (
             <Link 
-              to="/admin-rem" 
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/admin-rem' ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}
+              to="/admin-rem"
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/admin-rem' ? 'bg-blue-600 text-white font-semibold' : 'font-medium hover:bg-slate-800 hover:text-white'}`}
+              
             >
               <FileSpreadsheet size={18} className="shrink-0" />
               {sidebarOpen && <span className="truncate">Carga y Gestión REM</span>}
@@ -81,7 +84,7 @@ export default function DisenoPrincipal() {
           {(userRole === 'Subdireccion' || userRole === 'Gestor') && (
             <Link 
               to="/estado-datos" 
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/estado-datos' ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/estado-datos' ? 'bg-blue-600 text-white font-semibold' : 'font-medium hover:bg-slate-800 hover:text-white'}`}
             >
               <Table size={18} className="shrink-0" />
               {sidebarOpen && <span className="truncate">Estado de Datos</span>}
@@ -90,7 +93,7 @@ export default function DisenoPrincipal() {
           
           <Link 
             to="/reportes" 
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/reportes' ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/reportes' ? 'bg-blue-600 text-white font-semibold' : 'font-medium hover:bg-slate-800 hover:text-white'}`}
           >
             <FileText size={18} className="shrink-0" />
             {sidebarOpen && <span className="truncate">Reportes y Programas</span>}
@@ -99,7 +102,7 @@ export default function DisenoPrincipal() {
           {(userRole === 'Directora' || userRole === 'Subdireccion' || userRole === 'Gestor') && (
             <Link 
               to="/historico" 
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/historico' ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/historico' ? 'bg-blue-600 text-white font-semibold' : 'font-medium hover:bg-slate-800 hover:text-white'}`}
             >
               <History size={18} className="shrink-0" />
               {sidebarOpen && <span className="truncate">Comparativo Histórico</span>}
@@ -109,7 +112,7 @@ export default function DisenoPrincipal() {
           {userRole === 'Gestor' && (
             <Link 
               to="/usuarios" 
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/usuarios' ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/usuarios' ? 'bg-blue-600 text-white font-semibold' : 'font-medium hover:bg-slate-800 hover:text-white'}`}
             >
               <Users size={18} className="shrink-0" />
               {sidebarOpen && <span className="truncate">Gestión de Usuarios</span>}
@@ -120,7 +123,7 @@ export default function DisenoPrincipal() {
           {(userRole === 'Gestor' || userRole === 'Directora' || userRole === 'Subdireccion') && (
             <Link 
               to="/audit" 
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/audit' ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition ${sidebarOpen ? 'justify-start' : 'justify-center'} ${location.pathname === '/audit' ? 'bg-blue-600 text-white font-semibold' : 'font-medium hover:bg-slate-800 hover:text-white'}`}
             >
               <ShieldCheck size={18} className="shrink-0" />
               {sidebarOpen && <span className="truncate">Bitácora de Auditoría</span>}
@@ -143,16 +146,6 @@ export default function DisenoPrincipal() {
 
       {/* Panel Principal */}
       <div className="flex-1 flex flex-col h-full overflow-hidden bg-white">
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
-          <h2 className="text-base font-bold text-slate-800"></h2>
-          <div className="flex items-center gap-3">
-            <span className="text-xs bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full font-bold border border-emerald-200">
-              Rol Activo: {userRole}
-            </span>
-            <img src={logoImage} alt="Logo Esquina" className="w-8 h-8 object-contain" />
-          </div>
-        </header>
-
         <main className="flex-1 overflow-y-auto w-full bg-slate-50">
           <Outlet />
         </main>
