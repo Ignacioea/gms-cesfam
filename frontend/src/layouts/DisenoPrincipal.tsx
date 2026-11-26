@@ -50,7 +50,7 @@ export default function DisenoPrincipal() {
             <div className="overflow-hidden">
               <p className="text-xs font-bold text-white truncate">{userName}</p>
               <span className="inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 font-semibold uppercase mt-0.5">
-                Rol: {userRole}
+              {userRole}
               </span>
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function DisenoPrincipal() {
         <div className="p-4 border-t border-slate-800 space-y-2">
           <Link to="/configuracion-cuenta" className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition text-xs font-semibold">
             <UserCheck size={16} />
-            {sidebarOpen && <span>Mi Cuenta - Configuración</span>}
+            {sidebarOpen && <span>Cuenta</span>}
           </Link>
           <button onClick={handleLogout} className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition text-xs font-semibold cursor-pointer">
             <LogOut size={16} />

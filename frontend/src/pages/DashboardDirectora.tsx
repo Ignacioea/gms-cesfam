@@ -235,16 +235,10 @@ export default function DashboardDirectora() {
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-900 text-white uppercase tracking-wider">
-              Panel Directivo Oficial
-            </span>
-            <span className="text-xs font-semibold text-slate-500">
-              Datos reales PostgreSQL ({totalMetas} indicadores procesados)
-            </span>
           </div>
           <h3 className="text-xl font-black text-blue-950 mt-1">Dashboard de Gestión & Semáforo de Metas</h3>
           <p className="text-xs text-slate-500 font-medium">
-            Monitoreo gerencial de metas IAAPS, Ley 19.813 y asignaciones presupuestarias del CESFAM Santa Rosa.
+            Monitoreo gerencial de metas IAAPS y asignaciones presupuestarias del CESFAM Santa Rosa.
           </p>
         </div>
 
