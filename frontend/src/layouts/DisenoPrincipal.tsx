@@ -46,13 +46,17 @@ export default function DisenoPrincipal() {
         {/* Apartado de Datos de Cuenta, Foto y Rol del Funcionario */}
         {sidebarOpen && (
           <div className="p-4 border-b border-slate-800 flex items-center gap-3 bg-blue-900/60">
-            <img src={userPhoto} alt="Perfil" className="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 shrink-0" />
-            <div className="overflow-hidden">
-              <p className="text-xs font-bold text-white truncate">
+            <img 
+              src={userPhoto} 
+              alt="Perfil" 
+              className="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 shrink-0" 
+            />
+            <div className="flex flex-col items-start justify-center overflow-hidden min-w-0">
+              <p className="text-xs font-semibold text-white truncate m-0 leading-tight">
                 {userName}
-                </p>
-              <span className="inline-block px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 font-semibold uppercase mt-0.5">
-              {userRole}
+              </p>
+              <span className="mt-1 px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 font-semibold uppercase leading-none">
+                {userRole}
               </span>
             </div>
           </div>

@@ -274,8 +274,8 @@ export default function ReportesDirectora() {
               Sector: <strong className="text-slate-700">{sectorSeleccionado}</strong>
             </span>
           </div>
-          <h3 className="text-xl font-black text-blue-950 mt-1">Cumplimiento de Metas e Indicadores Clínicos</h3>
-          <p className="text-xs text-slate-500 font-medium">
+          <h3 className="text-xl font-black text-blue-950 mt-1 text-left w-full">Cumplimiento de Metas e Indicadores Clínicos</h3>
+          <p className="text-xs text-slate-500 font-medium text-left w-full">
             Monitoreo en tiempo real con filtro por sector, desglose por programa de salud y trazabilidad de celdas REM.
           </p>
         </div>
@@ -488,7 +488,7 @@ export default function ReportesDirectora() {
               <Layers size={20} />
             </div>
             <div>
-              <h4 className="font-black text-blue-950 text-sm">
+              <h4 className="font-black text-blue-950 text-sm text-left w-full">
                 Tabla de Metas e Indicadores ({metasFiltradas.length} registros)
               </h4>
               <p className="text-xs text-slate-500">
@@ -584,11 +584,11 @@ export default function ReportesDirectora() {
             <MessageSquare size={20} />
           </div>
           <div>
-            <h4 className="font-black text-blue-950 text-sm">
+            <h4 className="font-black text-blue-950 text-sm text-left w-full">
               Observaciones Clínicas y Justificaciones del Jefe de Programa
             </h4>
             <p className="text-xs text-slate-500">
-              Registro oficial de retroalimentación técnica accesible para Dirección y Subdirección del CESFAM.
+              Registro oficial de retroalimentación técnica accesible para Dirección y Subdirección 
             </p>
           </div>
         </div>
@@ -661,7 +661,7 @@ export default function ReportesDirectora() {
                   <Calendar size={12} /> {c.fecha}
                 </span>
               </div>
-              <p className="text-xs text-slate-700 leading-relaxed font-medium">{c.texto}</p>
+              <p className="text-xs text-slate-700 leading-relaxed font-medium text-left w-full">{c.texto}</p>
               <div className="text-[11px] text-slate-500 font-semibold flex items-center gap-1.5 pt-1">
                 <User size={13} className="text-slate-400" />
                 Registrado por: <span className="text-blue-950 font-bold">{c.autor}</span>

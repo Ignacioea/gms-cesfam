@@ -345,11 +345,8 @@ export default function CargaYParametrizacionRem() {
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <h3 className="text-xl font-black text-blue-950">Parametrización y Carga REM</h3>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
-              PostgreSQL
-            </span>
           </div>
-          <p className="text-sm font-medium text-slate-500">
+          <p className="text-sm font-medium text-slate-500 text-left w-full">
             Administre las coordenadas de celdas REM, las metas comprometidas y las poblaciones objetivo para el cálculo de cumplimiento.
           </p>
         </div>
@@ -417,7 +414,7 @@ export default function CargaYParametrizacionRem() {
                   Incorporación de Denominador y Población para Cálculo de Metas
                 </h4>
               </div>
-              <p className="text-xs text-blue-100 max-w-3xl leading-relaxed">
+              <p className="text-xs text-blue-100 max-w-3xl leading-relaxed text-left w-full">
                 El sistema extrae las actividades realizadas (<strong>Numerador</strong>) desde los libros REM Serie A. 
                 Los campos a continuación permiten ingresar la <strong>Población Inscrita Validada por FONASA</strong> y prevalencias 
                 oficiales del CESFAM Santa Rosa, las cuales actúan automáticamente como el <strong>Denominador</strong> en las fórmulas de cumplimiento.
@@ -759,13 +756,13 @@ export default function CargaYParametrizacionRem() {
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <Target size={20} className="text-blue-600" />
-                <h4 className="font-bold text-blue-950 text-sm uppercase tracking-wider">
+                <h4 className="font-bold text-blue-950 text-sm uppercase tracking-wider text-left w-full">
                   Calibración de Fórmulas, Metas Comprometidas y Celdas REM
                 </h4>
               </div>
-              <p className="text-xs text-slate-500 max-w-3xl">
-                Ajuste flexible de las coordenadas Excel (Hoja y Celda) para cada actividad clínica del REM Serie A (RF-11), 
-                así como las metas anuales esperadas y ponderaciones institucionales (RF-04).
+              <p className="text-xs text-slate-500 max-w-3xl text-left w-full">
+                Ajuste flexible de las coordenadas Excel para cada actividad clínica del REM Serie A, 
+                así como las metas anuales esperadas y ponderaciones institucionales.
               </p>
             </div>
             <button

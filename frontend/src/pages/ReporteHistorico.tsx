@@ -228,16 +228,13 @@ export default function ReporteHistorico() {
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-900 uppercase">
-              Módulo Estratégico (RF-07 / RF-08)
-            </span>
             <span className="text-xs font-semibold text-slate-500">
               Período: <strong className="text-slate-800">{anioBase}</strong> vs <strong className="text-slate-800">{anioComparacion}</strong>
             </span>
           </div>
-          <h3 className="text-xl font-black text-blue-950 mt-1">Reporte Comparativo Histórico e Interanual</h3>
-          <p className="text-xs text-slate-500 font-medium">
-            Análisis de evolución interanual, deltas ($\Delta$) de cumplimiento de metas y trazabilidad de desempeño del CESFAM.
+          <h3 className="text-xl font-black text-blue-950 mt-1 text-left w-full">Reporte Comparativo Histórico e Interanual</h3>
+          <p className="text-xs text-slate-500 font-medium text-left w-full">
+            Análisis de evolución interanual, deltas de cumplimiento de metas y trazabilidad de desempeño del CESFAM.
           </p>
         </div>
 

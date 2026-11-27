@@ -131,15 +131,9 @@ export default function BitacoraAuditoria() {
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-900 uppercase">
-              Módulo de Seguridad & Trazabilidad (RF-12)
-            </span>
-            <span className="text-xs font-semibold text-slate-500">
-              Registros en PostgreSQL: <strong className="text-slate-700">{totalRegistros}</strong>
-            </span>
           </div>
-          <h3 className="text-xl font-black text-blue-950 mt-1">Bitácora Oficial de Auditoría</h3>
-          <p className="text-xs text-slate-500 font-medium">
+          <h3 className="text-xl font-black text-blue-950 mt-1 text-left w-full">Bitácora Oficial de Auditoría</h3>
+          <p className="text-xs text-slate-500 font-medium text-left w-full">
             Registro inmutable de actividades administrativas, cambios de parámetros de metas, ingestas REM y operaciones de usuarios.
           </p>
         </div>

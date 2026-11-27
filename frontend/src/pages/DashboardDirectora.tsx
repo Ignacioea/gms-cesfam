@@ -236,9 +236,9 @@ export default function DashboardDirectora() {
         <div>
           <div className="flex items-center gap-2">
           </div>
-          <h3 className="text-xl font-black text-blue-950 mt-1">Dashboard de Gestión & Semáforo de Metas</h3>
+          <h3 className="text-xl font-black text-blue-950 mt-1 text-left w-full">Dashboard de Gestión & Semáforo de Metas</h3>
           <p className="text-xs text-slate-500 font-medium">
-            Monitoreo gerencial de metas IAAPS y asignaciones presupuestarias del CESFAM Santa Rosa.
+            Monitoreo gerencial de metas IAAPS y asignaciones presupuestarias del CESFAM
           </p>
         </div>
 
