@@ -74,8 +74,8 @@ export default function EstadoDatos() {
       {/* Cabecera del Módulo Centrada */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex-1 flex flex-col items-center text-center space-y-1">
-          <h3 className="text-xl font-black text-blue-950">Estado de Datos y Cobertura REM</h3>
-          <p className="text-sm font-medium text-slate-500 max-w-2xl">
+          <h3 className="text-xl font-black text-blue-950 text-left w-full">Estado de Datos y Cobertura REM</h3>
+          <p className="text-sm font-medium text-slate-500  text-left w-full">
             Matriz de control y mapa de calor institucional para verificar los meses y planillas cargadas en el sistema.
           </p>
         </div>
