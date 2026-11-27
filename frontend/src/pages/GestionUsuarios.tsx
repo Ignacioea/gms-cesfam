@@ -167,7 +167,7 @@ export default function GestionUsuarios() {
         };
 
         await api.post('usuarios/', payload);
-        setMensajeExito(`Nuevo usuario '${nombres} ${apellidos}' incorporado a PostgreSQL.`);
+        setMensajeExito(`Nuevo usuario '${nombres} ${apellidos}' creado exitosamente.`);
       }
 
       setModalAbierto(false);
@@ -231,13 +231,7 @@ export default function GestionUsuarios() {
         <div className="space-y-1 max-w-2xl">
           <div className="flex items-center justify-center gap-2">
             <h3 className="text-xl font-black text-blue-950">Gestión de Usuarios y Roles Institucionales</h3>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
-              PostgreSQL
-            </span>
           </div>
-          <p className="text-sm font-medium text-slate-500">
-            Control de accesos RBAC, suspensión de cuentas, asignación de roles y persistencia directa en base de datos.
-          </p>
         </div>
         <div className="flex items-center gap-3">
           <button 
@@ -333,7 +327,7 @@ export default function GestionUsuarios() {
             {cargando ? (
               <tr>
                 <td colSpan={6} className="py-8 text-center text-sm font-semibold text-slate-400">
-                  Cargando usuarios desde PostgreSQL...
+                  Cargando usuarios...
                 </td>
               </tr>
             ) : usuariosFiltrados.length > 0 ? (

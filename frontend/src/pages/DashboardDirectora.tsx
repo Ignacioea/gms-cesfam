@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useCalculoIndicadoresQuery } from '../api/queries';
 import ModalDetalleIndicador from '../components/ModalDetalleIndicador';
+import SelectorFecha from '../components/SelectorFecha';
 
 interface ResultadoCalc {
   indicador: number;
@@ -69,7 +70,7 @@ export default function DashboardDirectora() {
 
   const resultados: ResultadoCalc[] = calcData?.resultados || [];
   const mesesConDatos = calcData?.hasta_mes || 12;
-  const error = isError ? 'No se pudo conectar con el servidor de cálculo. Verifique la base de datos PostgreSQL.' : '';
+  const error = isError ? 'No se pudo conectar con el servidor de cálculo. Verifique la conexión con la base de datos.' : '';
   const [indicadorModal, setIndicadorModal] = useState<ResultadoCalc | null>(null);
 
   // ==========================================
@@ -234,18 +235,7 @@ export default function DashboardDirectora() {
       {/* Cabecera del Módulo */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-900 text-white uppercase tracking-wider">
-              Panel Directivo Oficial
-            </span>
-            <span className="text-xs font-semibold text-slate-500">
-              Datos reales PostgreSQL ({totalMetas} indicadores procesados)
-            </span>
-          </div>
           <h3 className="text-xl font-black text-blue-950 mt-1">Dashboard de Gestión & Semáforo de Metas</h3>
-          <p className="text-xs text-slate-500 font-medium">
-            Monitoreo gerencial de metas IAAPS, Ley 19.813 y asignaciones presupuestarias del CESFAM Santa Rosa.
-          </p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -253,7 +243,7 @@ export default function DashboardDirectora() {
             onClick={() => cargarDatos()}
             disabled={cargando || isFetching}
             className="flex items-center gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2.5 rounded-xl font-bold text-xs transition cursor-pointer"
-            title="Recalcular desde PostgreSQL"
+            title="Actualizar datos"
           >
             <RefreshCw size={15} className={cargando || isFetching ? 'animate-spin' : ''} />
             Actualizar
@@ -343,24 +333,22 @@ export default function DashboardDirectora() {
           </div>
         </div>
 
-        {/* Fechas opcionales */}
+        {/* Fechas opcionales con Selector Visual */}
         <div className="flex flex-wrap items-center gap-4 pt-1 text-xs">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-500">Fecha Desde:</span>
-            <input 
-              type="date" 
-              value={fechaInicio} 
-              onChange={(e) => setFechaInicio(e.target.value)} 
-              className="rounded-lg border border-slate-200 px-2.5 py-1 bg-slate-50 font-medium" 
+            <SelectorFecha
+              value={fechaInicio}
+              onChange={setFechaInicio}
+              placeholder="Desde..."
             />
           </div>
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-500">Fecha Hasta:</span>
-            <input 
-              type="date" 
-              value={fechaFin} 
-              onChange={(e) => setFechaFin(e.target.value)} 
-              className="rounded-lg border border-slate-200 px-2.5 py-1 bg-slate-50 font-medium" 
+            <SelectorFecha
+              value={fechaFin}
+              onChange={setFechaFin}
+              placeholder="Hasta..."
             />
           </div>
           {(fechaInicio || fechaFin || busqueda || area !== 'Todos los Sectores' || corte) && (
@@ -624,9 +612,6 @@ export default function DashboardDirectora() {
             <Activity size={18} className="text-blue-600" />
             Alertas Tempranas del Semáforo Directivo
           </h4>
-          <span className="text-xs font-bold bg-blue-50 text-blue-800 px-2.5 py-1 rounded-lg">
-            Generadas desde PostgreSQL
-          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -701,7 +686,7 @@ export default function DashboardDirectora() {
         {cargando ? (
           <div className="h-64 flex flex-col items-center justify-center text-slate-400 space-y-3">
             <RefreshCw size={36} className="animate-spin text-blue-900" />
-            <p className="text-xs font-bold">Calculando indicadores con datos reales PostgreSQL...</p>
+            <p className="text-xs font-bold">Calculando indicadores con datos reales...</p>
           </div>
         ) : metasFiltradas.length === 0 ? (
           <div className="h-48 flex flex-col items-center justify-center text-slate-400 space-y-2 p-6">

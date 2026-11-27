@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../api/axios';
 import { BarChart3, RefreshCw, TrendingUp, TrendingDown, Minus, Info, Calendar } from 'lucide-react';
 import ModalDetalleIndicador from '../components/ModalDetalleIndicador';
+import SelectorFecha from '../components/SelectorFecha';
 
 interface ResultadoCalc {
   indicador: number;
@@ -232,23 +233,21 @@ export default function Cumplimiento({ titulo = 'Reportes de Cumplimiento', comp
             <Calendar size={15} className="text-blue-950" />
             <span>Rango de Fechas Opcional:</span>
           </div>
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <div className="flex items-center gap-2 flex-1 sm:flex-initial">
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+            <div className="flex items-center gap-2">
               <label className="text-xs font-semibold text-slate-500">Desde:</label>
-              <input 
-                type="date" 
-                value={fechaInicio} 
-                onChange={(e) => setFechaInicio(e.target.value)}
-                className="rounded-xl border border-slate-200 bg-slate-50/50 p-1.5 text-xs font-semibold text-slate-800 focus:border-blue-900 focus:outline-none" 
+              <SelectorFecha
+                value={fechaInicio}
+                onChange={setFechaInicio}
+                placeholder="Desde..."
               />
             </div>
-            <div className="flex items-center gap-2 flex-1 sm:flex-initial">
+            <div className="flex items-center gap-2">
               <label className="text-xs font-semibold text-slate-500">Hasta:</label>
-              <input 
-                type="date" 
-                value={fechaFin} 
-                onChange={(e) => setFechaFin(e.target.value)}
-                className="rounded-xl border border-slate-200 bg-slate-50/50 p-1.5 text-xs font-semibold text-slate-800 focus:border-blue-900 focus:outline-none" 
+              <SelectorFecha
+                value={fechaFin}
+                onChange={setFechaFin}
+                placeholder="Hasta..."
               />
             </div>
             {(fechaInicio || fechaFin || sector !== 'Todos los Sectores' || programa !== 'Todos los Programas' || corte) && (

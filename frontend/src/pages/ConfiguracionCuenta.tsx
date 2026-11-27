@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   User, Lock, Save, AlertCircle, CheckCircle2, ShieldCheck, 
   Key, Eye, EyeOff, ShieldAlert, Building2, Mail, 
-  BadgeCheck, Clock, RefreshCw, Activity, ArrowRight, Laptop
+  BadgeCheck, Clock, RefreshCw, Activity, ArrowRight, Laptop, Info
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
@@ -101,49 +101,50 @@ export default function ConfiguracionCuenta() {
   const tieneLetra = /[a-zA-Z]/.test(passwordNueva);
   const coincidenContrasenas = passwordNueva !== '' && passwordNueva === passwordConfirmar;
 
-  // Guardar cambios en PostgreSQL
+  // Guardar cambios de contraseña (datos personales son de solo lectura)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMensaje({ texto: '', tipo: '' });
 
-    if (passwordNueva) {
-      if (!passwordActual) {
-        setMensaje({ texto: 'Debe ingresar su contraseña actual para confirmar el cambio.', tipo: 'error' });
-        return;
-      }
-      if (!coincidenContrasenas) {
-        setMensaje({ texto: 'La nueva contraseña y su confirmación no coinciden.', tipo: 'error' });
-        return;
-      }
-      if (!tieneMinCaracteres) {
-        setMensaje({ texto: 'La nueva contraseña debe tener al menos 6 caracteres.', tipo: 'error' });
-        return;
-      }
+    if (!passwordActual) {
+      setMensaje({ texto: 'Debe ingresar su contraseña actual para confirmar el cambio.', tipo: 'error' });
+      return;
+    }
+    if (!passwordNueva) {
+      setMensaje({ texto: 'Debe ingresar la nueva contraseña.', tipo: 'error' });
+      return;
+    }
+    if (!passwordConfirmar) {
+      setMensaje({ texto: 'Debe confirmar su nueva contraseña.', tipo: 'error' });
+      return;
+    }
+    if (!coincidenContrasenas) {
+      setMensaje({ texto: 'La nueva contraseña y su confirmación no coinciden.', tipo: 'error' });
+      return;
+    }
+    if (!tieneMinCaracteres) {
+      setMensaje({ texto: 'La nueva contraseña debe tener al menos 6 caracteres.', tipo: 'error' });
+      return;
     }
 
     setCargando(true);
     try {
       const payload: Record<string, any> = {
-        nombres: nombres.trim(),
-        apellidos: apellidos.trim(),
+        password_actual: passwordActual,
+        password_nueva: passwordNueva,
       };
-      if (passwordNueva) {
-        payload.password_actual = passwordActual;
-        payload.password_nueva = passwordNueva;
-      }
 
       const res = await api.put('usuarios/mi_perfil/', payload);
       
       setMensaje({ 
-        texto: res.data.mensaje || 'Información de perfil y credenciales guardadas exitosamente.', 
+        texto: res.data.mensaje || 'Contraseña actualizada exitosamente.', 
         tipo: 'exito' 
       });
       setPasswordActual('');
       setPasswordNueva('');
       setPasswordConfirmar('');
-      localStorage.setItem('user_name', `${nombres} ${apellidos}`.trim());
     } catch (err: any) {
-      const errorMsg = err.response?.data?.error || err.response?.data?.detail || 'No se pudieron actualizar los datos. Verifique su contraseña actual.';
+      const errorMsg = err.response?.data?.error || err.response?.data?.detail || 'No se pudo actualizar la contraseña. Verifique su contraseña actual.';
       setMensaje({ texto: errorMsg, tipo: 'error' });
     } finally {
       setCargando(false);
@@ -194,15 +195,6 @@ export default function ConfiguracionCuenta() {
 
             {/* Información rápida */}
             <div className="space-y-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className={`px-3 py-0.5 rounded-full text-xs font-black uppercase tracking-wider border shadow-sm ${getBadgeColorRol(rolNombre)}`}>
-                  {rolNombre}
-                </span>
-                <span className="inline-flex items-center gap-1 text-xs text-emerald-400 font-semibold bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Sesión JWT Activa
-                </span>
-              </div>
               <h2 className="text-2xl md:text-3xl font-black tracking-tight text-white">
                 {cargandoDatos ? 'Cargando perfil...' : `${nombres} ${apellidos}`.trim() || initialName}
               </h2>
@@ -225,7 +217,7 @@ export default function ConfiguracionCuenta() {
               onClick={cargarPerfil}
               disabled={cargandoDatos}
               className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-xl font-bold text-xs transition border border-white/10 cursor-pointer backdrop-blur-sm"
-              title="Refrescar datos desde PostgreSQL"
+              title="Refrescar datos"
             >
               <RefreshCw size={15} className={cargandoDatos ? 'animate-spin' : ''} />
               Refrescar
@@ -265,7 +257,7 @@ export default function ConfiguracionCuenta() {
         <div className="lg:col-span-2 space-y-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             
-            {/* TARJETA 1: DATOS PERSONALES Y PROFESIONALES */}
+            {/* TARJETA 1: DATOS PERSONALES Y PROFESIONALES (SOLO LECTURA) */}
             <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-5">
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
@@ -274,39 +266,54 @@ export default function ConfiguracionCuenta() {
                   </div>
                   <div>
                     <h4 className="text-base font-black text-blue-950">Información del Funcionario</h4>
-                    <p className="text-xs text-slate-500 font-medium">Datos personales e identificación en la red asistencial del CESFAM.</p>
+                    <p className="text-xs text-slate-500 font-medium">Datos personales e identificación oficial en el CESFAM (solo lectura).</p>
                   </div>
                 </div>
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Paso 1 de 2</span>
+              </div>
+
+              {/* Nota informativa de datos protegidos */}
+              <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 font-medium">
+                <Info size={16} className="text-blue-600 shrink-0" />
+                <span>
+                  Por políticas de seguridad y trazabilidad asistencial, sus datos personales (nombre, apellido, RUT y correo) son de <strong>solo lectura</strong>. Para solicitar modificaciones, contacte al Gestor institucional.
+                </span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    Nombres <span className="text-rose-500">*</span>
+                    Nombres
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={nombres}
-                    onChange={(e) => setNombres(e.target.value)}
-                    placeholder="Ej: Carmen Gloria"
-                    className="w-full rounded-xl border border-slate-300 p-3 text-sm font-semibold text-slate-900 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-900 transition"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      disabled
+                      value={nombres}
+                      className="w-full rounded-xl border border-slate-200 p-3 text-sm font-semibold text-slate-600 bg-slate-100 cursor-not-allowed"
+                    />
+                    <Lock size={15} className="absolute right-3.5 top-3.5 text-slate-400" />
+                  </div>
+                  <span className="text-[11px] text-slate-400 mt-1 block font-medium">
+                    Nombre oficial registrado en el sistema.
+                  </span>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    Apellidos <span className="text-rose-500">*</span>
+                    Apellidos
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={apellidos}
-                    onChange={(e) => setApellidos(e.target.value)}
-                    placeholder="Ej: Directora Reyes"
-                    className="w-full rounded-xl border border-slate-300 p-3 text-sm font-semibold text-slate-900 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-900 transition"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      disabled
+                      value={apellidos}
+                      className="w-full rounded-xl border border-slate-200 p-3 text-sm font-semibold text-slate-600 bg-slate-100 cursor-not-allowed"
+                    />
+                    <Lock size={15} className="absolute right-3.5 top-3.5 text-slate-400" />
+                  </div>
+                  <span className="text-[11px] text-slate-400 mt-1 block font-medium">
+                    Apellido oficial registrado en el sistema.
+                  </span>
                 </div>
 
                 <div>
@@ -361,7 +368,6 @@ export default function ConfiguracionCuenta() {
                     </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Paso 2 de 2</span>
               </div>
 
               {/* Contraseña Actual */}
@@ -455,30 +461,35 @@ export default function ConfiguracionCuenta() {
             {/* BOTONES DE ACCIÓN */}
             <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
               <span className="text-xs text-slate-500 font-medium">
-                Toda modificación quedará registrada con fecha, hora e IP en la bitácora de auditoría.
+                Toda modificación de contraseña quedará registrada en la bitácora oficial de auditoría.
               </span>
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  onClick={cargarPerfil}
+                  onClick={() => {
+                    setPasswordActual('');
+                    setPasswordNueva('');
+                    setPasswordConfirmar('');
+                    setMensaje({ texto: '', tipo: '' });
+                  }}
                   className="px-5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer"
                 >
-                  Descartar
+                  Limpiar Campos
                 </button>
                 <button
                   type="submit"
-                  disabled={cargando}
+                  disabled={cargando || !passwordActual || !passwordNueva || !passwordConfirmar}
                   className="flex items-center gap-2 bg-blue-950 hover:bg-blue-900 text-white px-6 py-2.5 rounded-xl font-bold text-xs shadow-md transition cursor-pointer disabled:opacity-50"
                 >
                   {cargando ? (
                     <>
                       <RefreshCw size={15} className="animate-spin" />
-                      <span>Guardando en PostgreSQL...</span>
+                      <span>Actualizando contraseña...</span>
                     </>
                   ) : (
                     <>
-                      <Save size={15} />
-                      <span>Guardar Cambios de Cuenta</span>
+                      <Key size={15} />
+                      <span>Actualizar Contraseña</span>
                     </>
                   )}
                 </button>
@@ -492,65 +503,88 @@ export default function ConfiguracionCuenta() {
         <div className="space-y-6">
           
           {/* TARJETA: PERMISOS Y ALCANCE SEGÚN ROL */}
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-4">
-            <div className="flex items-center gap-2 text-xs font-bold text-blue-950 uppercase tracking-wider pb-2 border-b border-slate-100">
-              <ShieldCheck size={16} className="text-blue-600" />
-              <span>Privilegios y Alcance (RBAC)</span>
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 space-y-5">
+            <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100">
+              <div className="p-2 rounded-xl bg-blue-50 text-blue-900 font-bold">
+                <ShieldCheck size={18} className="text-blue-700" />
+              </div>
+              <div>
+                <h4 className="text-sm font-black text-blue-950">Privilegios y Alcance del Rol</h4>
+                <p className="text-[11px] text-slate-400 font-medium">Nivel de autorización y módulos habilitados</p>
+              </div>
             </div>
 
-            <div className="space-y-3">
-              <div>
-                <span className="text-[11px] font-bold text-slate-400 uppercase">Rol Vigente</span>
-                <div className="mt-1 flex items-center justify-between">
-                  <span className={`px-2.5 py-1 rounded-xl text-xs font-black uppercase border ${getBadgeColorRol(rolNombre)}`}>
-                    {rolNombre}
-                  </span>
-                  <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
-                    <CheckCircle2 size={13} /> Autorizado
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500 font-medium mt-2 leading-relaxed">
-                  {rolDescripcion || 'Funcionario acreditado con acceso a los módulos asistenciales del CESFAM Santa Rosa.'}
-                </p>
+            {/* Cuadro destacado de Rol Vigente */}
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Rol Vigente</span>
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                  <CheckCircle2 size={12} className="text-emerald-600" /> Autorizado
+                </span>
               </div>
+              <div>
+                <span className={`inline-block px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wide border shadow-sm ${getBadgeColorRol(rolNombre)}`}>
+                  {rolNombre}
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 font-medium leading-relaxed pt-1">
+                {rolDescripcion || 'Funcionario acreditado con acceso a los módulos asistenciales del CESFAM Santa Rosa.'}
+              </p>
+            </div>
 
-              {/* Lista de capacidades activas según rol */}
-              <div className="pt-2 border-t border-slate-100 space-y-2 text-xs">
-                <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1.5">Permisos del Sistema:</span>
-                
-                <div className="flex items-center gap-2 text-slate-700 font-medium">
-                  <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
+            {/* Listado estructurado de permisos del sistema */}
+            <div className="space-y-2.5">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
+                Permisos del Sistema
+              </span>
+              
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-slate-50 transition text-xs font-semibold text-slate-700">
+                  <div className="p-1 rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                    <CheckCircle2 size={13} />
+                  </div>
                   <span>Acceso al Dashboard de Gestión y Semáforos</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-700 font-medium">
-                  <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
+
+                <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-slate-50 transition text-xs font-semibold text-slate-700">
+                  <div className="p-1 rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                    <CheckCircle2 size={13} />
+                  </div>
                   <span>Cálculo en vivo de metas e indicadores IAAPS</span>
                 </div>
                 
                 {(rolNombre === 'Directora' || rolNombre === 'Subdireccion' || rolNombre === 'Gestor') && (
-                  <div className="flex items-center gap-2 text-slate-700 font-medium">
-                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
+                  <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-slate-50 transition text-xs font-semibold text-slate-700">
+                    <div className="p-1 rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                      <CheckCircle2 size={13} />
+                    </div>
                     <span>Reporte Comparativo Histórico e Interanual</span>
                   </div>
                 )}
 
                 {(rolNombre === 'Gestor' || rolNombre === 'Subdireccion' || rolNombre === 'Directora') && (
-                  <div className="flex items-center gap-2 text-slate-700 font-medium">
-                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
-                    <span>Bitácora de Auditoría y Trazabilidad (RF-12)</span>
+                  <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-slate-50 transition text-xs font-semibold text-slate-700">
+                    <div className="p-1 rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                      <CheckCircle2 size={13} />
+                    </div>
+                    <span>Bitácora de Auditoría y Trazabilidad</span>
                   </div>
                 )}
 
                 {(rolNombre === 'Gestor' || rolNombre === 'Subdireccion') && (
-                  <div className="flex items-center gap-2 text-slate-700 font-medium">
-                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
+                  <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-slate-50 transition text-xs font-semibold text-slate-700">
+                    <div className="p-1 rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                      <CheckCircle2 size={13} />
+                    </div>
                     <span>Carga y Validación de Planillas REM Serie A</span>
                   </div>
                 )}
 
                 {rolNombre === 'Gestor' && (
-                  <div className="flex items-center gap-2 text-slate-700 font-medium">
-                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
+                  <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-slate-50 transition text-xs font-semibold text-slate-700">
+                    <div className="p-1 rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                      <CheckCircle2 size={13} />
+                    </div>
                     <span>Administración de Usuarios y Perfiles del CESFAM</span>
                   </div>
                 )}

@@ -229,6 +229,14 @@ def calcular_indicador(indicador, anio, libros, sector=None):
         elif comp.tipo == 'DENOMINADOR':
             denominador_fijo = (denominador_fijo or Decimal('0')) + comp.valor_fijo
 
+    meta = None
+    for v in indicador.valores.all():
+        if v.anio == anio:
+            meta = v.valor
+            break
+
+    num_acum = Decimal('0')
+    den_acum = Decimal('0')
     for archivo in libros.archivos:
         num_mes = Decimal('0')
         den_mes = Decimal('0')
@@ -246,20 +254,31 @@ def calcular_indicador(indicador, anio, libros, sector=None):
                 den_mes += valor
         numerador_rem += num_mes
         denominador_rem += den_mes
+        num_acum += num_mes
+        den_acum += den_mes
+
+        # Total acumulado real hasta el mes correspondiente
+        num_hasta_mes = num_acum + numerador_fijo
+        den_hasta_mes = (den_acum + (denominador_fijo or Decimal('0'))) if indicador.forma_calculo != 'VALOR' else None
+        res_hasta_mes = _resultado(indicador.forma_calculo, num_hasta_mes, den_hasta_mes)
+        cump_hasta_mes = None
+        if res_hasta_mes is not None and meta not in (None, 0):
+            try:
+                cump_hasta_mes = (Decimal(str(res_hasta_mes)) / Decimal(str(meta))) * Decimal('100')
+            except Exception:
+                cump_hasta_mes = None
+
         por_mes[archivo.periodo_mes] = {
-            'numerador': num_mes,
-            'denominador': den_mes,
+            'numerador_mes': str(num_mes),
+            'numerador_acum': str(num_hasta_mes),
+            'denominador': str(den_hasta_mes) if den_hasta_mes is not None else None,
+            'resultado_acum': str(round(res_hasta_mes, 2)) if res_hasta_mes is not None else None,
+            'cumplimiento_acum': str(round(cump_hasta_mes, 1)) if cump_hasta_mes is not None else None,
         }
 
     numerador = numerador_rem + numerador_fijo
     denominador = denominador_rem + (denominador_fijo or Decimal('0'))
     resultado = _resultado(indicador.forma_calculo, numerador, denominador)
-
-    meta = None
-    for v in indicador.valores.all():
-        if v.anio == anio:
-            meta = v.valor
-            break
 
     cumplimiento = None
     if resultado is not None and meta not in (None, 0):

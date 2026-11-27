@@ -345,13 +345,7 @@ export default function CargaYParametrizacionRem() {
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <h3 className="text-xl font-black text-blue-950">Parametrización y Carga REM</h3>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
-              PostgreSQL
-            </span>
           </div>
-          <p className="text-sm font-medium text-slate-500">
-            Administre las coordenadas de celdas REM, las metas comprometidas y las poblaciones objetivo para el cálculo de cumplimiento.
-          </p>
         </div>
 
         {/* Selector de Pestañas (3 Pestañas Integradas) */}
@@ -763,10 +757,6 @@ export default function CargaYParametrizacionRem() {
                   Calibración de Fórmulas, Metas Comprometidas y Celdas REM
                 </h4>
               </div>
-              <p className="text-xs text-slate-500 max-w-3xl">
-                Ajuste flexible de las coordenadas Excel (Hoja y Celda) para cada actividad clínica del REM Serie A (RF-11), 
-                así como las metas anuales esperadas y ponderaciones institucionales (RF-04).
-              </p>
             </div>
             <button
               onClick={() => cargarMetasYCeldas(anioPoblacion)}
@@ -827,7 +817,7 @@ export default function CargaYParametrizacionRem() {
                   {cargandoMetas ? (
                     <tr>
                       <td colSpan={8} className="py-8 text-center text-slate-400 font-semibold">
-                        Cargando catálogo de metas y celdas desde PostgreSQL...
+                        Cargando catálogo de metas y celdas...
                       </td>
                     </tr>
                   ) : indicadoresFiltrados.length === 0 ? (
@@ -984,7 +974,7 @@ export default function CargaYParametrizacionRem() {
 
                   <div className="border-t border-slate-100 pt-3 space-y-3">
                     <h5 className="font-black text-blue-950 text-[11px] uppercase tracking-wider">
-                      Ubicación de Celdas REM para Numerador (RF-11)
+                      Ubicación de Celdas REM para Numerador
                     </h5>
 
                     <div className="grid grid-cols-2 gap-3">

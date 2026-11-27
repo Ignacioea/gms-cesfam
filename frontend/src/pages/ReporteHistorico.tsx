@@ -126,19 +126,10 @@ export default function ReporteHistorico() {
         datosBaseMap = {};
       }
 
-      // Si para 2025 no hay REM cargados en el motor, calculamos una línea base razonable según meta oficial
-      const items: ItemComparativo[] = datosActuales.map((item, idx) => {
+      // Comparativo histórico 100% real derivado de planillas REM y base de datos
+      const items: ItemComparativo[] = datosActuales.map((item) => {
         const pctAct = item.cumplimiento_pct ? parseFloat(item.cumplimiento_pct) : 0;
-        
-        // Si hay datos base en BD usarlos; si no, derivar línea base de referencia
-        let pctB = datosBaseMap[item.codigo];
-        if (pctB === undefined) {
-          // Línea base histórica referencial basada en meta o tendencia previa
-          const metaNum = item.meta_valor ? parseFloat(item.meta_valor) : 80;
-          const factorVariacion = ((idx % 5) - 2) * 2.5; // variaciones suaves entre -5% y +5%
-          pctB = Math.max(0, Math.round((pctAct > 0 ? (pctAct - factorVariacion) : (metaNum * 0.85)) * 10) / 10);
-        }
-
+        const pctB = datosBaseMap[item.codigo] !== undefined ? datosBaseMap[item.codigo] : 0;
         const delta = Math.round((pctAct - pctB) * 10) / 10;
         const estadoTendencia: 'MEJORA' | 'DESCENSO' | 'ESTABLE' = 
           delta > 0.5 ? 'MEJORA' : delta < -0.5 ? 'DESCENSO' : 'ESTABLE';
@@ -159,7 +150,7 @@ export default function ReporteHistorico() {
       setItemsComparativos(items);
     } catch (err: any) {
       console.error('Error al generar comparativo histórico:', err);
-      setError('No se pudo generar el reporte comparativo con la base de datos PostgreSQL.');
+      setError('No se pudo generar el reporte comparativo con la base de datos.');
     } finally {
       setCargando(false);
     }
@@ -227,18 +218,7 @@ export default function ReporteHistorico() {
       {/* Cabecera del Módulo */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-900 uppercase">
-              Módulo Estratégico (RF-07 / RF-08)
-            </span>
-            <span className="text-xs font-semibold text-slate-500">
-              Período: <strong className="text-slate-800">{anioBase}</strong> vs <strong className="text-slate-800">{anioComparacion}</strong>
-            </span>
-          </div>
           <h3 className="text-xl font-black text-blue-950 mt-1">Reporte Comparativo Histórico e Interanual</h3>
-          <p className="text-xs text-slate-500 font-medium">
-            Análisis de evolución interanual, deltas ($\Delta$) de cumplimiento de metas y trazabilidad de desempeño del CESFAM.
-          </p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -393,7 +373,7 @@ export default function ReporteHistorico() {
         {cargando ? (
           <div className="h-64 flex flex-col items-center justify-center text-slate-400 space-y-3">
             <RefreshCw size={36} className="animate-spin text-blue-900" />
-            <p className="text-xs font-bold">Calculando deltas interanuales desde PostgreSQL...</p>
+            <p className="text-xs font-bold">Calculando deltas interanuales...</p>
           </div>
         ) : itemsFiltrados.length === 0 ? (
           <div className="h-48 flex flex-col items-center justify-center text-slate-400 space-y-2 p-6">

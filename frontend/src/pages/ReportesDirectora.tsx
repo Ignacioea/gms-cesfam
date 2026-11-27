@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Filter, Download, TrendingUp, TrendingDown, CheckCircle, AlertTriangle, 
-  Search, MessageSquare, Send, Calendar, User, BarChart3, Layers, Minus, 
+  Search, Calendar, BarChart3, Layers, Minus, 
   Info, RefreshCw 
 } from 'lucide-react';
 import api from '../api/axios';
 import ModalDetalleIndicador from '../components/ModalDetalleIndicador';
+import SelectorFecha from '../components/SelectorFecha';
 
 interface ResultadoCalc {
   indicador: number;
@@ -26,15 +27,6 @@ interface ResultadoCalc {
   estado: 'CUMPLE' | 'EN_RIESGO' | 'NO_CUMPLE' | 'SIN_META' | 'SIN_CONFIGURAR' | 'NO_CALCULABLE';
   meses_con_datos: number[];
   errores: string[];
-}
-
-interface ComentarioClinico {
-  id: number;
-  programa: string;
-  sector: string;
-  autor: string;
-  texto: string;
-  fecha: string;
 }
 
 const SECTORES_OPCIONES = [
@@ -113,7 +105,6 @@ function BarraProgreso({ pct }: { pct: number | null }) {
 
 export default function ReportesDirectora() {
   const userRole = localStorage.getItem('user_role') || 'Directora';
-  const userName = localStorage.getItem('user_name') || 'Funcionario';
 
   // Filtros principales
   const [sectorSeleccionado, setSectorSeleccionado] = useState('Todos los Sectores');
@@ -129,29 +120,6 @@ export default function ReportesDirectora() {
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState('');
   const [indicadorModal, setIndicadorModal] = useState<ResultadoCalc | null>(null);
-
-  // Observaciones Clínicas (RF de retroalimentación)
-  const [comentarios, setComentarios] = useState<ComentarioClinico[]>([
-    {
-      id: 1,
-      programa: 'Cardiovascular',
-      sector: 'Sector Sur (Verde)',
-      autor: 'Enf. Marcela Riquelme (Jefe de Programa)',
-      texto: 'Se intensificaron los controles cardiovasculares y operativos sabatinos de compensación en personas con DM2 y HTA.',
-      fecha: '2026-10-15 10:30'
-    },
-    {
-      id: 2,
-      programa: 'Odontológico',
-      sector: 'Sector Norte (Azul)',
-      autor: 'Dr. Esteban Tapia (Jefe de Programa)',
-      texto: 'Meta de alta odontológica infantil de 6 años requiere seguimiento debido a rotación de sillón dental en sector norte.',
-      fecha: '2026-10-14 16:45'
-    }
-  ]);
-  const [nuevoComentarioTexto, setNuevoComentarioTexto] = useState('');
-  const [comentarioPrograma, setComentarioPrograma] = useState('Cardiovascular');
-  const [comentarioSector, setComentarioSector] = useState('Sector Norte (Azul)');
 
   // Carga de datos desde la API oficial de PostgreSQL
   const cargarMetas = async () => {
@@ -242,42 +210,13 @@ export default function ReportesDirectora() {
     document.body.removeChild(link);
   };
 
-  // Publicar nueva observación clínica
-  const handleGuardarComentario = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!nuevoComentarioTexto.trim()) return;
-
-    const nuevo: ComentarioClinico = {
-      id: Date.now(),
-      programa: comentarioPrograma,
-      sector: comentarioSector,
-      autor: `${userName} (${userRole})`,
-      texto: nuevoComentarioTexto,
-      fecha: new Date().toLocaleString('es-CL')
-    };
-
-    setComentarios([nuevo, ...comentarios]);
-    setNuevoComentarioTexto('');
-  };
-
   return (
     <div className="w-full min-h-full bg-slate-50 p-6 md:p-8 space-y-6">
       
       {/* Cabecera del Módulo */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-900 uppercase">
-              Módulo de Reportes & Jefe de Programa
-            </span>
-            <span className="text-xs font-semibold text-slate-400">
-              Sector: <strong className="text-slate-700">{sectorSeleccionado}</strong>
-            </span>
-          </div>
           <h3 className="text-xl font-black text-blue-950 mt-1">Cumplimiento de Metas e Indicadores Clínicos</h3>
-          <p className="text-xs text-slate-500 font-medium">
-            Monitoreo en tiempo real con filtro por sector, desglose por programa de salud y trazabilidad de celdas REM.
-          </p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -390,24 +329,22 @@ export default function ReportesDirectora() {
           </div>
         </div>
 
-        {/* Rango de Fechas Opcionales */}
+        {/* Rango de Fechas Opcionales con Selector Visual */}
         <div className="flex flex-wrap items-center gap-4 pt-2 text-xs">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-500">Fecha Desde:</span>
-            <input 
-              type="date" 
-              value={fechaInicio} 
-              onChange={(e) => setFechaInicio(e.target.value)} 
-              className="rounded-lg border border-slate-200 px-2.5 py-1 bg-slate-50 font-medium"
+            <SelectorFecha
+              value={fechaInicio}
+              onChange={setFechaInicio}
+              placeholder="Desde..."
             />
           </div>
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-500">Fecha Hasta:</span>
-            <input 
-              type="date" 
-              value={fechaFin} 
-              onChange={(e) => setFechaFin(e.target.value)} 
-              className="rounded-lg border border-slate-200 px-2.5 py-1 bg-slate-50 font-medium"
+            <SelectorFecha
+              value={fechaFin}
+              onChange={setFechaFin}
+              placeholder="Hasta..."
             />
           </div>
           {(fechaInicio || fechaFin || busqueda || sectorSeleccionado !== 'Todos los Sectores' || programaSeleccionado !== 'Todos los Programas') && (
@@ -504,7 +441,7 @@ export default function ReportesDirectora() {
         {cargando ? (
           <div className="h-64 flex flex-col items-center justify-center text-slate-400 space-y-3">
             <RefreshCw size={36} className="animate-spin text-blue-900" />
-            <p className="text-xs font-bold">Calculando indicadores con datos PostgreSQL...</p>
+            <p className="text-xs font-bold">Calculando indicadores con datos reales...</p>
           </div>
         ) : metasFiltradas.length === 0 ? (
           <div className="h-48 flex flex-col items-center justify-center text-slate-400 space-y-2 p-6">
@@ -573,102 +510,6 @@ export default function ReportesDirectora() {
             </table>
           </div>
         )}
-      </div>
-
-      {/* ============================================================== */}
-      {/* SECCIÓN DE OBSERVACIONES CLÍNICAS (Jefe de Programa / Dirección) */}
-      {/* ============================================================== */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6">
-        <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-          <div className="p-2 rounded-xl bg-emerald-50 text-emerald-900">
-            <MessageSquare size={20} />
-          </div>
-          <div>
-            <h4 className="font-black text-blue-950 text-sm">
-              Observaciones Clínicas y Justificaciones del Jefe de Programa
-            </h4>
-            <p className="text-xs text-slate-500">
-              Registro oficial de retroalimentación técnica accesible para Dirección y Subdirección del CESFAM.
-            </p>
-          </div>
-        </div>
-
-        {/* Formulario para agregar observación */}
-        <form onSubmit={handleGuardarComentario} className="bg-slate-50/70 p-4 rounded-xl border border-slate-200 space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-bold text-slate-600 mb-1">Programa Asociado</label>
-              <select 
-                value={comentarioPrograma} 
-                onChange={(e) => setComentarioPrograma(e.target.value)}
-                className="w-full rounded-xl border border-slate-300 p-2 text-xs bg-white font-semibold text-slate-800"
-              >
-                {PROGRAMAS_OPCIONES.filter(p => p !== 'Todos los Programas').map(p => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-600 mb-1">Sector Involucrado</label>
-              <select 
-                value={comentarioSector} 
-                onChange={(e) => setComentarioSector(e.target.value)}
-                className="w-full rounded-xl border border-slate-300 p-2 text-xs bg-white font-semibold text-slate-800"
-              >
-                {SECTORES_OPCIONES.filter(s => s !== 'Todos los Sectores').map(s => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-slate-600 mb-1">
-              Análisis Técnico / Justificación de Cumplimiento
-            </label>
-            <textarea 
-              rows={2} 
-              value={nuevoComentarioTexto} 
-              onChange={(e) => setNuevoComentarioTexto(e.target.value)} 
-              placeholder="Describa factores clínicos, operativos o de dotación que impactan en el cumplimiento de las metas..."
-              className="w-full rounded-xl border border-slate-300 p-3 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-900"
-              required 
-            />
-          </div>
-
-          <div className="flex justify-end">
-            <button 
-              type="submit" 
-              className="flex items-center gap-2 bg-blue-950 text-white px-5 py-2 rounded-xl font-bold text-xs shadow hover:bg-blue-900 transition cursor-pointer"
-            >
-              <Send size={14} /> Registrar Observación
-            </button>
-          </div>
-        </form>
-
-        {/* Listado de observaciones */}
-        <div className="space-y-3">
-          {comentarios.map((c) => (
-            <div key={c.id} className="p-4 rounded-xl border border-slate-100 bg-white hover:border-slate-300 transition space-y-2">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-50 pb-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-xs text-blue-950">{c.programa}</span>
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-800">
-                    {c.sector}
-                  </span>
-                </div>
-                <span className="text-[11px] text-slate-400 flex items-center gap-1">
-                  <Calendar size={12} /> {c.fecha}
-                </span>
-              </div>
-              <p className="text-xs text-slate-700 leading-relaxed font-medium">{c.texto}</p>
-              <div className="text-[11px] text-slate-500 font-semibold flex items-center gap-1.5 pt-1">
-                <User size={13} className="text-slate-400" />
-                Registrado por: <span className="text-blue-950 font-bold">{c.autor}</span>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Modal de Detalle de Indicador (Coordenadas REM y Fórmulas) */}

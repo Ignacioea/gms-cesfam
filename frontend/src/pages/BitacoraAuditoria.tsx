@@ -5,6 +5,7 @@ import {
   RefreshCw, Download, Database, Layers, ArrowRight 
 } from 'lucide-react';
 import { useBitacoraAuditoriaQuery } from '../api/queries';
+import SelectorFecha from '../components/SelectorFecha';
 
 interface UsuarioDetalle {
   id: number;
@@ -130,18 +131,7 @@ export default function BitacoraAuditoria() {
       {/* Cabecera del Módulo */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-900 uppercase">
-              Módulo de Seguridad & Trazabilidad (RF-12)
-            </span>
-            <span className="text-xs font-semibold text-slate-500">
-              Registros en PostgreSQL: <strong className="text-slate-700">{totalRegistros}</strong>
-            </span>
-          </div>
           <h3 className="text-xl font-black text-blue-950 mt-1">Bitácora Oficial de Auditoría</h3>
-          <p className="text-xs text-slate-500 font-medium">
-            Registro inmutable de actividades administrativas, cambios de parámetros de metas, ingestas REM y operaciones de usuarios.
-          </p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -252,24 +242,22 @@ export default function BitacoraAuditoria() {
           </div>
         </div>
 
-        {/* Filtros de Fecha Calendario */}
+        {/* Filtros de Fecha Calendario con Selector Visual */}
         <div className="flex flex-wrap items-center gap-4 pt-2 border-t border-slate-100 text-xs">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-500">Fecha Desde:</span>
-            <input
-              type="date"
+            <SelectorFecha
               value={fechaInicio}
-              onChange={(e) => setFechaInicio(e.target.value)}
-              className="rounded-lg border border-slate-200 px-2.5 py-1 bg-slate-50 font-medium"
+              onChange={setFechaInicio}
+              placeholder="Desde..."
             />
           </div>
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-500">Fecha Hasta:</span>
-            <input
-              type="date"
+            <SelectorFecha
               value={fechaFin}
-              onChange={(e) => setFechaFin(e.target.value)}
-              className="rounded-lg border border-slate-200 px-2.5 py-1 bg-slate-50 font-medium"
+              onChange={setFechaFin}
+              placeholder="Hasta..."
             />
           </div>
 
@@ -311,7 +299,7 @@ export default function BitacoraAuditoria() {
         {cargando ? (
           <div className="h-64 flex flex-col items-center justify-center text-slate-400 space-y-3">
             <RefreshCw size={36} className="animate-spin text-blue-900" />
-            <p className="text-xs font-bold">Consultando bitácora de auditoría en PostgreSQL...</p>
+            <p className="text-xs font-bold">Consultando bitácora de auditoría...</p>
           </div>
         ) : registrosFiltrados.length === 0 ? (
           <div className="h-48 flex flex-col items-center justify-center text-slate-400 space-y-2 p-6">
